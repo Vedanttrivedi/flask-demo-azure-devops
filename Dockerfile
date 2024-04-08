@@ -1,6 +1,20 @@
-FROM ubuntu:16.04
-RUN apt-get update && apt-get install -y python python-pip
-RUN pip install --upgrade pip
-RUN pip install flask
-COPY app.py /opt/
-ENTRYPOINT FLASK_APP=/opt/app.py flask run --host=0.0.0.0 --port=8080
+# Use the official Python image as the base image
+FROM python:3.8-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the dependencies file to the working directory
+COPY requirements.txt .
+
+# Install any dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the content of the local src directory to the working directory
+COPY . .
+
+# Expose port 8080 to the outside world
+EXPOSE 4001
+
+# Command to run the Flask application
+CMD ["python", "app.py"]
