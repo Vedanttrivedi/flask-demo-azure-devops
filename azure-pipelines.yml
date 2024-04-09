@@ -31,9 +31,10 @@ stages:
       inputs:
         targetType: 'inline'
         script: 'az login'
+      
     - task: Bash@3
       inputs:
         targetType: 'inline'
-        script: 'az container create --resource-group sa1_test_eic_VedantTrivedi --name myscontainer --image vedanttrivedi/flask-demo:60 --dns-name-label vstlabs --ports 80'
+        script: 'az container create --resource-group sa1_test_eic_VedantTrivedi --name myscontainerse --image vedanttrivedi/flask-demo:60 --dns-name-label vstlabs --ports 80'
     
       displayName: Create container instance and upload docker image
