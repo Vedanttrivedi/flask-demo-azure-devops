@@ -21,13 +21,12 @@ stages:
         repository: 'vedanttrivedi/flask-demo'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
-
-    # Define a variable in the Build stage
-    - script: echo "##vso[task.setvariable variable=version]1.2.3"
-      displayName: 'Set version'
-      name: DockerVersion
-
-    - script: echo "hii $(DockerVersion.version)"
+    - script: |
+        echo "This is job Foo."
+        echo "##vso[task.setvariable variable=doThing;isOutput=true]Yes" #The variable doThing is set to true
+      name: DetermineResult
+      
+    - script: echo $(DetermineResult.doThing)
       name: echovar
 - stage: Deploy
   displayName: Deploy
