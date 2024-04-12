@@ -28,14 +28,18 @@ stages:
       
     - script: echo $(DetermineResult.doThing)
       name: echovar
+
 - stage: Deploy
   displayName: Deploy
   jobs:
   - job: Deploy
     displayName: Deploy
+    condition: eq(stageDependencies.Build.Build.outputs['DetermineResult.doThing'], 'Yes') #map doThing and check if true
+    
     pool: Default 
+    
+    variables:
+      varFromStageA: $[ stageDependencies.Build.Build.outputs['DetermineResult.doThing'] ]
     steps:
-    # Use the variable defined in the Build stage
-    - script: echo "Hello $(stageDependencies.Build.Build.outputs['DockerVersion.version'])"
-      displayName: 'Use version'
-# 
+    - bash: echo "Hello world stage  From DEploy stage job"
+    - script: echo $(varFromStageA)
