@@ -24,7 +24,8 @@ stages:
     - script: |
         echo "Accessing dynamic version $(versions)"
       name: AccessDynamicVersion
-      
+    - script: |
+        echo "Version in Build stage: $(versions)"
 
 - stage: Deploy
   displayName: Deploy
@@ -34,6 +35,7 @@ stages:
     pool: Default 
     
     variables:
-      buildVariable: $[ stageDependencies.Build.DynamicVersion.outputs['versions'] ]
+      buildVariable: $[ stageDependencies.Build.DynamicVersion.outputs['DynamicVersion.versions'] ]
     steps:
     - script: echo "Using variable defined in build stage $(buildVariable)"
+      name: PrintDeployedVersion
