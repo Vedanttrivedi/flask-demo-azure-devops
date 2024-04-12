@@ -18,6 +18,12 @@ stages:
     - script: |
         echo "##vso[task.setvariable variable=version;isOutput=true]1.1.1"
       name: DefineVersion
+    - script: |
+        echo "##vso[task.setvariable variable=versions;isOutput=true]$[ stageDependencies.Build.Build.outputs['DefineVersion.version']]"
+      name: DynamicVersion
+    - script: |
+        echo "Accessing dynamic version ${DynamicVersion.versions}"
+      name: AccessDynamicVersion
       
 
 - stage: Deploy
