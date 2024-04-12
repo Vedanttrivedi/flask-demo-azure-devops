@@ -23,8 +23,9 @@ stages:
         Dockerfile: '**/Dockerfile'
 
     # Define a variable in the Build stage
-    - bash: echo "##vso[task.setvariable variable=version]1.2.3"
+    - script: echo "##vso[task.setvariable variable=version]1.2.3"
       displayName: 'Set version'
+      name: DockerVersion
 
 - stage: Deploy
   displayName: Deploy
@@ -34,6 +35,6 @@ stages:
     pool: Default 
     steps:
     # Use the variable defined in the Build stage
-    - script: echo "Hello"
+    - script: echo "Hello $(stageDependencies.Build.Build.outputs['DockerVersion.version'])"
       displayName: 'Use version'
-# $(stageDependencies.Build.Build.outputs['Set version.version'])
+# 
