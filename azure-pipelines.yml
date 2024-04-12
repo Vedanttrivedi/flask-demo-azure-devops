@@ -1,7 +1,3 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
 trigger:
 - main
 
@@ -10,14 +6,16 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
+  sampleVariable: 'exampleValue' # Define a sample variable
 
 stages:
 - stage: Build
-  displayName: Build and push image
+  displayName: Build
   jobs:
   - job: Build
     displayName: Build
-    pool: Default
+    pool:
+      vmImage: 'ubuntu-latest'
       
     steps:
     - task: Docker@2
@@ -27,14 +25,19 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
 
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: 'az login'
-      
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: 'az container create --resource-group sa1_test_eic_VedantTrivedi --name myscontainerse --image vedanttrivedi/flask-demo:60 --dns-name-label vstlabs --ports 80'
-    
-      displayName: Create container instance and upload docker image
+    # Set an output variable
+    - script: echo "##vso[task.setvariable variable=outputVariable;isOutput=true]$(sampleVariable)"
+      name: setOutputVar
+
+- stage: Deploy
+  displayName: Deploy
+  jobs:
+  - job: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    # Reference the output variable from the build stage
+    steps:
+    - script: echo $(Build.Outputs.Build.setOutputVar)
+      name: echoOutputVar
