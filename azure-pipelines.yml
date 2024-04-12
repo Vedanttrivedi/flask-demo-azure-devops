@@ -15,14 +15,8 @@ stages:
     displayName: Build
     pool: Default
     steps:
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'docker'
-        repository: 'vedanttrivedi/flask-demo'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
     - script: |
-        echo "##vso[task.setvariable variable=version;isOutput=true]1.1.1" #The variable doThing is set to true
+        echo "##vso[task.setvariable variable=version;isOutput=true]1.1.1"
       name: DefineVersion
       
 
@@ -31,7 +25,6 @@ stages:
   jobs:
   - job: Deploy
     displayName: Deploy
-    #condition: eq(stageDependencies.Build.Build.outputs['DefineVersion.version'], 'Yes')
     pool: Default 
     
     variables:
