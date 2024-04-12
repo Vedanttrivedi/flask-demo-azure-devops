@@ -6,6 +6,7 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
+  version: ''
 
 stages:
 - stage: Build
@@ -14,6 +15,7 @@ stages:
   - job: Build
     displayName: Build
     pool: Default
+
     steps:
     - task: Docker@2
       inputs:
@@ -22,10 +24,9 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
 
-    # Define an output variable
-    - bash: echo "##vso[task.setvariable variable=sampleVariable]exampleValue"
-      displayName: 'Set sampleVariable'
-      name: setSampleVariable # Assign a name to this step
+    # Define a variable in the Build stage
+    - bash: echo "##vso[task.setvariable variable=version]1.0.0"
+      displayName: 'Set version'
 
 - stage: Deploy
   displayName: Deploy
@@ -33,8 +34,8 @@ stages:
   - job: Deploy
     displayName: Deploy
     pool: Default
-
+    
     steps:
-    # Use the output variable defined in the Build stage
-    - script: echo $(Build.Build.setSampleVariable.sampleVariable)
-      displayName: 'Use sampleVariable'
+    # Use the variable defined in the Build stage
+    - script: echo $(version)
+      displayName: 'Use version'
