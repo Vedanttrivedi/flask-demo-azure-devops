@@ -14,8 +14,7 @@ stages:
   jobs:
   - job: Build
     displayName: Build
-    pool:
-      vmImage: 'ubuntu-latest'
+    pool: Default
       
     steps:
     - task: Docker@2
@@ -34,8 +33,7 @@ stages:
   jobs:
   - job: Deploy
     displayName: Deploy
-    pool:
-      vmImage: 'ubuntu-latest'
+    pool: Default
 
     # Reference the output variable from the build stage
     steps:
