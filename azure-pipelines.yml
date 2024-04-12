@@ -34,5 +34,6 @@ stages:
     pool: Default 
     steps:
     # Use the variable defined in the Build stage
-    - script: echo $(stageDependencies.Build.Build.outputs['Set version.version'])
+    - script: echo "Hello"
       displayName: 'Use version'
+# $(stageDependencies.Build.Build.outputs['Set version.version'])
