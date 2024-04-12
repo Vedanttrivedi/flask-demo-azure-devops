@@ -27,6 +27,8 @@ stages:
       displayName: 'Set version'
       name: DockerVersion
 
+    - script: echo "hii $(DockerVersion.version)"
+      name: echovar
 - stage: Deploy
   displayName: Deploy
   jobs:
