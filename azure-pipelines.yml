@@ -23,8 +23,12 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
 
-    # Define and assign a variable
-    - bash: echo "##vso[task.setvariable variable=sampleVariable]exampleValue"
+    # Define an output variable
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "##vso[task.setvariable variable=sampleVariable;isOutput=true]exampleValue"
       displayName: 'Set sampleVariable'
 
 - stage: Deploy
@@ -33,8 +37,7 @@ stages:
   - job: Deploy
     displayName: Deploy
     pool: Default
-
     steps:
-    # Use the variable defined in the Build stage
-    - script: echo $(sampleVariable)
+    # Use the output variable defined in the Build stage
+    - script: echo $(Build.Build.sampleVariable)
       displayName: 'Use sampleVariable'
