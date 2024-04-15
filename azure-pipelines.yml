@@ -31,5 +31,7 @@ stages:
   - job: Deploy
     displayName: Deploy
     pool: Default
+    variables:
+      version: $[dependencies.Build.Build.outputs['DefineVersion.version'] ]    
     steps:
-    - script: echo "Using variable defined in build stage $(versions)"
+    - script: echo "Using variable defined in build stage $(version)"
