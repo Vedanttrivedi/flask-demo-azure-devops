@@ -20,7 +20,7 @@ stages:
     steps:
     - script: |
         echo "variable from variable vversion is $(vversion)"
-        echo "##vso[task.setvariable variable=version;isOutput=true]${vversion}"
+        echo "##vso[task.setvariable variable=version;isOutput=true]$(vversion)"
       name: DefineVersion
       
  
