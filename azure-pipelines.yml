@@ -11,12 +11,13 @@ stages:
 - stage: Build
   displayName: Build
   jobs:
-  - job: Build
+  - job: BuildJob
     displayName: Build
     pool: Default
     steps:
     - script: echo "##vso[task.setvariable variable=version;isOutput=true]1.1.1"
       name: DefineVersion
+    - script: echo "hii {version}"
     #- script: |
      #   versions=$(DefineVersion.version)
      #   echo "variable in the dynamic version ${DefineVersion.version}"
@@ -27,10 +28,10 @@ stages:
 
 - stage: Deploy
   displayName: Deploy
-  variables:
-      deployversion: $[dependencies.Build.Build.outputs['DefineVersion.version'] ] 
   jobs:
   - job: Deploy
+    variables:
+      deployversion: $[dependencies.Build.BuildJob.outputs['DefineVersion.version']] 
     displayName: Deploy
     pool: Default
     steps:
