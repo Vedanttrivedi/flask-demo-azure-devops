@@ -1,38 +1,33 @@
 trigger:
 - main
-
+ 
 resources:
 - repo: self
-
+ 
 variables:
   tag: '$(Build.BuildId)'
-
+ 
 stages:
 - stage: Build
   displayName: Build
   jobs:
-  - job: BuildJob
+  - job: Build
     displayName: Build
     pool: Default
     steps:
-    - script: echo "##vso[task.setvariable variable=version;isOutput=true]1.1.1"
+    - script: |
+        echo "##vso[task.setvariable variable=version;isOutput=true]1.1.1"
       name: DefineVersion
-    - script: echo "hii ${version}"
-    #- script: |
-     #   versions=$(DefineVersion.version)
-     #   echo "variable in the dynamic version ${DefineVersion.version}"
-     #   echo "##vso[task.setvariable variable=versions;isOutput=true]$versions"
-     # name: DynamicVersion
-    #-# script: echo "Accessing dynamic version $(versions)"
-     # name: AccessDynamicVersion
-
+      
+ 
 - stage: Deploy
   displayName: Deploy
   jobs:
   - job: Deploy
-    variables:
-      deployversion: $[dependencies.Build.BuildJob.outputs['DefineVersion.version']] 
     displayName: Deploy
     pool: Default
+    
+    variables:
+      buildVariable: $[ stageDependencies.Build.Build.outputs['DefineVersion.version'] ]
     steps:
-    - script: echo "Using variable defined in build stage $(deployversion)"
+    - script: echo "Using variable define in build stage $(buildVariable)"
