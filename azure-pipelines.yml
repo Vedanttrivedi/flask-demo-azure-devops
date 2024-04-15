@@ -12,11 +12,14 @@ stages:
   displayName: Build
   jobs:
   - job: Build
+    
+    variables:
+      vversion : 10
     displayName: Build
     pool: Default
     steps:
     - script: |
-        echo "##vso[task.setvariable variable=version;isOutput=true]1.1.1"
+        echo "##vso[task.setvariable variable=version;isOutput=true]$vversion"
       name: DefineVersion
       
  
