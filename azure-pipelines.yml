@@ -16,7 +16,8 @@ stages:
     variables:
       vversion : 10
     displayName: Build
-    pool: Default
+    pool:
+      vmImage : ubuntu-latest
     steps:
     - script: |
         name="vedant"
@@ -31,8 +32,9 @@ stages:
   jobs:
   - job: Deploy
     displayName: Deploy
-    pool: Default
-    
+    pool: 
+      vmImage : ubuntu-latest
+
     variables:
       buildVariable: $[ stageDependencies.Build.Build.outputs['DefineVersion.version'] ]
     steps:
