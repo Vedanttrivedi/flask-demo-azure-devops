@@ -17,13 +17,13 @@ stages:
     steps:
     - script: echo "##vso[task.setvariable variable=version;isOutput=true]1.1.1"
       name: DefineVersion
-    - script: |
-        versions=$(DefineVersion.version)
-        echo "variable in the dynamic version ${DefineVersion.version}"
-        echo "##vso[task.setvariable variable=versions;isOutput=true]$versions"
-      name: DynamicVersion
-    - script: echo "Accessing dynamic version $(versions)"
-      name: AccessDynamicVersion
+    #- script: |
+     #   versions=$(DefineVersion.version)
+     #   echo "variable in the dynamic version ${DefineVersion.version}"
+     #   echo "##vso[task.setvariable variable=versions;isOutput=true]$versions"
+     # name: DynamicVersion
+    #-# script: echo "Accessing dynamic version $(versions)"
+     # name: AccessDynamicVersion
 
 - stage: Deploy
   displayName: Deploy
@@ -32,6 +32,6 @@ stages:
     displayName: Deploy
     pool: Default
     variables:
-      version: $[dependencies.Build.Build.outputs['DefineVersion.version'] ]    
+      deployversion: $[dependencies.Build.Build.outputs['DefineVersion.version'] ]    
     steps:
-    - script: echo "Using variable defined in build stage $(version)"
+    - script: echo "Using variable defined in build stage $(deployversion)"
